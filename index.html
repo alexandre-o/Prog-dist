@@ -1,0 +1,99 @@
+<!-- Déclaration du type de document comme étant du HTML-->
+<!DOCTYPE html>
+<!-- Début de la balise html -->
+<html lang="fr" class="h-100 w-100"> <!-- Classes utilisées par BootStrap pour définir la hauteur et largeur à 100% de la fenêtre -->
+    <!-- 
+        EnTête du document
+        Chargement des ressources utiles
+        Personnalisation du Titre et de l'icône de l'onglet du navigateur
+    -->
+    <head>
+        <!-- Texte en UTF-8 -->
+        <meta charset="utf-8">
+        <!-- BootStrap: https://getbootstrap.com/docs/5.1/getting-started/introduction/ -->
+        <!-- Chargement de JQuery pour BootStrap -->
+        <script src="./ressources/js/jquery.js"></script>
+        <!-- Chargement des ressources CSS BootStrap -->
+        <link rel="stylesheet" href="./ressources/bootstrap-5.1.3-dist/css/bootstrap.css">
+        <!-- Chargement des diverses ressources JS utiles pour BootStrap -->
+        <script src="./ressources/bootstrap-5.1.3-dist/js/bootstrap.bundle.js"></script>
+        <!-- Chargement des diverses ressources JS BootStrap -->
+        <script src="./ressources/bootstrap-5.1.3-dist/js/bootstrap.js"></script>
+        <!-- FontAwesome: https://fontawesome.com/v5.15/icons -->
+        <!-- Chargement des ressources FontAwesome pour les icones -->
+        <link href="./ressources/fontawesome-free-5.15.4-web/css/all.css" rel="stylesheet">
+        <script src="./ressources/fontawesome-free-5.15.4-web/js/all.js"></script>
+        <!-- Ressource JavaScript personnalisée liée à index.html -->
+        <script src="./ressources/js/index.js"></script>
+        <!-- Icône de la page Web, visible sur l'onglet du navigateur -->
+        <link rel="icon" href="ressources/images/favicon.ico"/>
+        <!-- Titre de la page Web, visible sur l'onglet du navigateur -->
+        <title> Projet Cybersécurité </title>
+
+    </head>
+    <!-- Corps de la page -->
+    <body class="h-100 w-100">
+        <!-- division englobant l'ensemble des éléments au sein du body -->
+        <div class="h-100 w-100">
+                <!-- NavBar BootStrap: https://getbootstrap.com/docs/5.1/components/navbar/ -->
+                <nav class="navbar navbar-expand-lg navbar-light bg-light rounded-lg sticky-top" id="navbar">
+                    <!-- container-fluid permet de rendre l'affichage de la barre de navigation "responsive" -->
+                    <div class="container-fluid">
+                        <!-- 
+                            Ancre HTML, permet la gestion de zones cliquables qui redirigent vers un lien précis
+                            target="_blank" permet d'ouvrir le lien dans un nouvel onglet
+                            rel="noopener noreferrer" permet d'éviter le phishing de type tabnabbing vers le lien vers lequel on redirige la personne
+                         -->
+                        <a class="navbar-brand" href="https://u-paris.fr/" target="_blank" rel="noopener noreferrer">
+                            <!-- Image qui affichera le logo de l'Université aux dimensions (longueur x hauteur): 150px x 50px-->
+                            <img alt="accueil" src="ressources/images/logo-universite.png" height="50" width="150">
+                        </a>
+                        <!-- Bouton qui apparaîtra si la navbar esponsive ne peut pas afficher son contenu en entier, sur un écran de smartphone par exemple -->
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                            <!-- Le bouton affichera alors une icône "Menu hamburger" -->
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <!-- Contenu de la barre de navigation -->
+                        <div class="collapse navbar-collapse" id="navbarText">
+                            <!-- Liste non ordonnée -->
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <!-- Ligne de la liste -->
+                                <li class="nav-item">
+                                    <a class="nav-link text-danger fw-bolder" href="#presentation">Présentation</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-danger fw-bolder" href="#programme">Programme</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-danger fw-bolder" href="#admission">Admission</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-danger fw-bolder" href="#debouches">Débouchés</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-danger fw-bolder" href="#referentiel">Référentiel</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-danger fw-bolder" href="#resume">Résumé</a>
+                                </li>
+                            </ul>
+                            <span class="navbar-text">
+                                <a class="nav-link text-danger fw-bolder" href="#contacts">Contacts</a>
+                            </span>
+                        </div>
+                    </div>
+                </nav>
+            <!-- Division qui contiendra le code HTML de la page voulue, en fonction d'index.js -->
+            <div id="container" class="bg-light mx-0 h-100 w-100" style="overflow-x: unset;">
+
+            </div>
+            <!-- Bas de page -->
+            <div id="footer" class="mt-2 bottom text-center bg-dark text-white" aria-label="breadcrumb">
+                <p>© 2022 Copyright: PATEL Stéphane, OGANEZOV Alexandre - <a href="https:github.com" class="text-decoration-none text-white" target="_blank" rel="noopener noreferrer">v1.0.0</a></p>
+            </div>
+
+        </div>
+
+    </body>
+
+</html>
