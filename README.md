@@ -1,4 +1,4 @@
-#[Site Web Projet](https://.github.io/)
+#[Site Web Projet](https://alexandre-o.github.io/Prog-dist/)
 
 ---
 
@@ -12,7 +12,7 @@
 
 > `v1.0` `Bootstrap 5.1.3` `Font Awesome 5.15.4` `HTML 5` `JavaScript` `JQuery 3.6.0`  
 > [Code source](https://github.com/alexandre-o/Prog-dist)  
-> [URL](https://.github.io/)
+> [URL](https://alexandre-o.github.io/Prog-dist/)
 
 ## Sommaire
 - [Résumé](#Résumé)
@@ -90,7 +90,7 @@ Extrait du fichier `index.js`
 
 ## Le site
 
-###- Vous pouvez consulter le site Web en cliquant [ici](https://.github.io/).  
+###- Vous pouvez consulter le site Web en cliquant [ici](https://alexandre-o.github.io/Prog-dist/).  
   
 ###- Page d'accueil
 ![Accueil](./ressources/images/readme/accueil.png)
