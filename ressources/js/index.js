@@ -20,8 +20,14 @@ function affichageContainer(){
 			$.get("ressources/html/contacts.html", function (reponse) {
 				// Le contenu que l'on souhaite récupréer se trouve dans la division avec pour id contacts, donc on filtre ça dans content
 				content = $(reponse).filter("#contacts").html();
-				// On actualise la division #container de index.html par le contenu filtré de contacts.html
-				$("#container").html(content);
+				$.get("ressources/python/scripts/contacts.py", function(reponse){
+					console.log(reponse);
+					// On Actualise les données des balises Mustache avec les données reçues par le script python.
+					// Les noms des balises correspondent aux clefs du tableau JSON qui sont les clefs de la requete SQL.
+					content = Mustache.render(content, reponse);					
+					// On actualise la division #container de index.html par le contenu filtré de contacts.html
+					$("#container").html(content);
+				}, "json");
 			}, "html"); // html sert à spécifier le type de contenu qui sera renvoyé par la requête
 			break;
 		// Si hash vaut "#debouches"

@@ -10,7 +10,7 @@
 >
 > Version: **_`1.0.0`_**
 
-> `v1.0` `Bootstrap 5.1.3` `Font Awesome 5.15.4` `HTML 5` `JavaScript` `JQuery 3.6.0`  
+> `v1.0` `Bootstrap 5.1.3` `Font Awesome 5.15.4` `HTML 5` `JavaScript` `JQuery 3.6.0` `Mustache 3.0.3`  
 > [Code source](https://github.com/alexandre-o/Prog-dist)  
 > [URL](https://alexandre-o.github.io/Prog-dist/)
 
@@ -86,6 +86,122 @@ Extrait du fichier `index.js`
     		affichageContainer();
     	});
     });
+```
+
+La version 1.1.0 intègre du code python pour pouvoir lancer un serveur local et prendre en charge la gestion de transactions SQL avec une base de données MySQL. 
+
+Le fichier `http-server-cgi.py` permet de lancer le serveur local. Il faut avoir [Python 3](https://www.python.org/downloads/release/python-3910/) d'installer sur sa machine puis d'exécuter la commande `python http-server-cgi.py` (Linux) ou bien `python http-server-cgi.py` (Windows) sur un terminal, au niveau de la racine du projet.  
+/!\ Sur Windows, pour lancer la base via Wampserver il faut d'abord lancer le script python puis démarrer les services Wamp. Si Wamp tourne, vous ne pourrez utiliser le serveur Python et donc, ne pas utiliser le script de requêtes SQL. /!\
+
+Extrait du fichier `http-server-cgi.py`
+
+```python
+    #coding:utf-8
+    import http.server
+
+    hote = "localhost" # machine hôte du serveur
+    port = 80 # port HTTP par défaut
+    adresse = (hote, port) # "" pour localhost, via le port machine port
+    serveur = http.server.HTTPServer
+
+    handler = http.server.CGIHTTPRequestHandler
+    handler.cgi_directories = ["/ressources/python"] # emplacement du fichier python index.py
+
+    httpd = serveur(adresse, handler)
+    # Affichage du bon lancement sur le terminal
+    print("Le serveur a démarré sur ", hote, ":", port)
+    # lancement du serveur en continu
+    httpd.serve_forever()
+```
+
+Script SQL pour la base de données (`base.sql`)
+
+```sql
+DROP SCHEMA IF EXISTS `base` ;
+-- -----------------------------------------------------
+-- Schema base
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `base` DEFAULT CHARACTER SET utf8 ;
+USE `base` ;
+-- -----------------------------------------------------
+-- Table `base`.`contacts`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `base`.`contacts` ;
+
+CREATE TABLE IF NOT EXISTS `base`.`contacts` (
+  `contact_ID` INT(11) NOT NULL AUTO_INCREMENT,
+  `contact_Nom` VARCHAR(128) NOT NULL,
+  `contact_Prenom` VARCHAR(256) NOT NULL,
+  `contact_Mail` TEXT NOT NULL,
+  `contact_Titre` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`contact_ID`),
+  UNIQUE INDEX `contact_ID_UNIQUE` (`contact_ID` ASC) VISIBLE)
+ENGINE = MyISAM
+AUTO_INCREMENT = 3
+DEFAULT CHARACTER SET = utf8;
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+-- -----------------------------------------------------
+-- Data for table `base`.`contacts`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `base`;
+INSERT INTO `base`.`contacts` (`contact_ID`, `contact_Nom`, `contact_Prenom`, `contact_Mail`, `contact_Titre`) VALUES (1, 'EXAMPLE', 'One', 'one.example@fai.com', 'Responsable du Master 1');
+INSERT INTO `base`.`contacts` (`contact_ID`, `contact_Nom`, `contact_Prenom`, `contact_Mail`, `contact_Titre`) VALUES (2, 'EXAMPLE', 'Two', 'two.ewample@fai.com', 'Responsable du diplôme');
+
+COMMIT;
+```
+
+Cette version contient également le template Mustache pour afficher dynamiquement du contenu HTML en fonction d'une requète SQL de type SELECT.
+
+Extrait du fichier `index.js` modifié pour prendre en charge Mustache
+
+```js
+    ...
+    // Si hash vaut "#contacts"
+    case ("#contacts"):
+        // On effectue une requête HTTP de type GET sur le fichier contacts.html qui va nous retourner du code HTML dans la variable reponse
+        $.get("ressources/html/contacts.html", function (reponse) {
+            // Le contenu que l'on souhaite récupréer se trouve dans la division avec pour id contacts, donc on filtre ça dans content
+            content = $(reponse).filter("#contacts").html();
+            $.get("ressources/python/scripts/contacts.py", function(reponse){
+                console.log("REQUETE PYTHON");
+                console.log(reponse);	
+                // On Actualise les données des balises Mustache avec les données reçues par le script python.
+                // Les noms des balises correspondent aux clefs du tableau JSON qui sont les clefs de la requete SQL.
+                content = Mustache.render(content, reponse);					
+                // On actualise la division #container de index.html par le contenu filtré de contacts.html
+                $("#container").html(content);
+            }, "json");
+        }, "html"); // html sert à spécifier le type de contenu qui sera renvoyé par la requête
+        break;
+    ...
+```
+
+Extrait du fichier `contacts.html` modifié pour prendre en charge Mustache
+
+```html
+    {{! Parcourt de chaque ligne d'un tableau }}
+    {{#.}}
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header text-center text-danger fw-bolder">
+                    {{ Affichage des valeurs associées aux clés NOM et PRENOM du tableau associatif pacouru}}
+                    <h2><i class="fas fa-id-badge"></i> {{NOM}} {{PRENOM}}</h2>
+                </div>
+                <div class="card-body text-center">
+                    <p class="card-text">{{TITRE}}</p>
+                    <!-- Outline Button BootStrap: https://getbootstrap.com/docs/5.1/components/buttons/#outline-buttons -->
+                    <a class="btn btn-outline-danger text-decoration-none"
+                        href="mailto:{{MAIL}}?subject=Master Informatique - Parcours Cybersécurite: Contacts" title="Envoyer un mail">
+                        <i class="fas fa-envelope-open-text"></i> {{MAIL}}
+                    </a>
+                </div>
+            </div>
+        </div>
+    {{/.}}
 ```
 
 ## Le site
