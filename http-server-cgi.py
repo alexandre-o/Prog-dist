@@ -2,7 +2,7 @@
 import http.server
 
 hote = "localhost" # machine hôte du serveur
-port = 80 # port HTTP par défaut
+port = 8080 # port choisi pour eviter les conflits avec WAMP
 adresse = (hote, port) # "" pour localhost, via le port machine port
 serveur = http.server.HTTPServer
 

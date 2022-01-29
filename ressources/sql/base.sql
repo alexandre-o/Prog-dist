@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `base`.`contacts` (
   `contact_Mail` TEXT NOT NULL,
   `contact_Titre` VARCHAR(45) NULL DEFAULT NULL,
   PRIMARY KEY (`contact_ID`),
-  UNIQUE INDEX `contact_ID_UNIQUE` (`contact_ID` ASC) VISIBLE)
+  UNIQUE INDEX `contact_ID_UNIQUE` (`contact_ID` ASC) )
 ENGINE = MyISAM
 AUTO_INCREMENT = 3
 DEFAULT CHARACTER SET = utf8;
