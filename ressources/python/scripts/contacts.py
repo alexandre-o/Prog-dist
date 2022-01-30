@@ -4,7 +4,7 @@ import json
 import mysql.connector
 try:
     # Initialisation de la connexion MySQL
-    bddConnexion = mysql.connector.connect(host="localhost", user="root", passwd="", database="base")
+    bddConnexion = mysql.connector.connect(host="localhost", user="root", passwd="root", database="base")
     # On récupère le curseur pour pouvoir faire des transactions SQL
     bdd = bddConnexion.cursor()
     # Requête SQL
