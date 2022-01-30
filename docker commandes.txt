@@ -1,0 +1,72 @@
+RESEAU COMMUN
+# on créé un réseau docker spécifique à nos 2 dockers futurs
+sudo docker network create -d bridge nomReseau
+
+DOCKER MySQL
+
+# ressource Internet:
+#https://techexpert.tips/fr/mysql-fr/installation-mysql-docker/
+
+# On installe l'image pyhton:latest
+sudo docker pull mysql
+# On créé le docker MySQL, on l'a configure avec un mdp pour l'utilisateur de la base et en copiant le répertoire du projet qui contient le code sql
+sudo docker run -d --name docker_mysql -e "MYSQL_ROOT_PASSWORD=root" -v /home/user/Documents/Prog-dist/ressources/sql:/home/sql --network nomReseau mysql 
+# On accède au docker MySQL
+sudo docker exec -ti docker_mysql /bin/bash
+# On met à jour les infos des dépôts apt
+apt update
+# On télécharge le paquet iproute2 pour pouvoir récupérer l'IP de la machine
+apt install iproute2 -y
+# on affiche l'ip et on la note
+ip a
+IP retournée -> 172.17.0.2
+# On accède à mysql, ça va demander de saisir un mdp, c'est celui défini dans la commande docker run, root
+mysql -u root -p
+# On créé la base de données base
+CREATE DATABASE base;
+# On regarde que c'est ok
+SHOW DATABASES;
+# On quitte Mysql
+exit
+# On créé la table à partir du script
+mysql -u root -p base < /home/sql/base.sql
+# On accède à mysql
+mysql -u root -p
+# On va dans base et on regarde les tables puis on affiche le contenu
+USE base;
+SHOW TABLES;
+SELECT * FROM contacts;
+# C'est bon, on peut quitter Mysql
+exit ou CTRL + D
+# on quitte le docker
+exit ou CTRL + D
+
+MACHINE HOTE
+
+# On édite le fichier python contacts.py
+nano /Prog-dist/ressources/python/scripts/contacts.py
+# On remplace localhost par l'ip de docker_python, passwd par le mot de passe mis dans le run docker_python
+# On enregistre les modifications en faisant CTRL  X, O, Entrée
+
+DOCKER PYTHON
+# Créer un DockfilePython dans le répertoire courant
+# DEBUT FICHIER
+FROM python:latest
+
+RUN apt update
+RUN apt upgrade -y
+
+RUN python -m pip install mysql-connector-python
+RUN python -m pip install cgi-tools
+RUN python -m pip install sockets
+RUN python -m pip install httpserver
+#RUN python -m pip install --upgrade pip
+#RUN python -m pip install jsonlib
+# FIN FICHIER
+
+# On créé l'image image_pyhton
+sudo docker build -t image_python -f DockerfilePython .
+# On créé le docker, -p permet de relier le port hote au port docker voulus
+ sudo docker run --rm -v /home/user/Documents/Prog-dist/:/app --network nomReseau -p 8888:80 image_python-site python /app/http-server-cgi.py
+# Sur la machne hôte, ouvrir un navigateur et taper ldresse ip:8888 dans la barre d'URL, le site doit s'afficher
+
